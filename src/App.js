@@ -1,25 +1,41 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
-function App() {
+function Cell({ toggle, isOn }) {
+  return (
+    <div
+      className="cell"
+      style={{ backgroundColor: isOn ? 'black' : 'white' }}
+      onClick={toggle}
+    />
+  );
+}
+
+function Grid() {
+  const [cells, setCells] = useState([false, false, false, false]);
+
+  const toggleCell = index => {
+    const newCells = [...cells];
+    newCells[index] = !newCells[index];
+    setCells(newCells);
+  };
+
+  const countOnCells = cells.filter(isOn => isOn).length;
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <p>Cells on: {countOnCells}</p>
+      <div className="grid">
+        {cells.map((isOn, index) => (
+          <Cell key={index} isOn={isOn} toggle={() => toggleCell(index)} />
+        ))}
+      </div>
     </div>
   );
+}
+
+function App() {
+  return <Grid />;
 }
 
 export default App;
